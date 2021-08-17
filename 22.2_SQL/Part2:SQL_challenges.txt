@@ -1,0 +1,17 @@
+#Part 2L SQL_challenges
+
+1) SELECT id, name, age FROM people WHERE age > 50 ORDER BY age DESC;
+
+2) SELECT sum(age) AS age_sum FROM people;
+
+3) SELECT MIN(age) AS age_min, MAX(age) AS age_max FROM people;
+
+4) SELECT FirstName, LastName, IsActive FROM students WHERE IsActive = 1;
+    Code wars doesn't test WHERE IsActive = True;
+
+5) SELECT age, COUNT(people_count) FROM people GROUP BY age;
+
+SELECT age, COUNT(*) people_count FROM people GROUP BY age;
+SELECT age, COUNT (*) people_count FROM people GROUP BY age;
+
+6) SELECT age, COUNT(*) AS total_people FROM people GROUP By age HAVING COUNT(*) >= 10;
