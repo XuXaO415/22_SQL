@@ -119,3 +119,79 @@ joins_exercise-# ORDER BY average_price DESC;
  Melody     | Jones     | 7799.9901123046875
 (6 rows)
 
+
+joins_exercise=# SELECT o.first_name, o.last_name, AVG(price) AS average_price
+FROM vehicles v
+JOIN owners o
+ON o.id = v.owner_id
+GROUP BY o.first_name, o.last_name
+HAVING COUNT(v.owner_id) > 1 AND AVG(price) > 10000
+ORDER BY first_name DESC;
+ first_name | last_name |   average_price    
+------------+-----------+--------------------
+ Shana      | Smith     | 19874.989624023438
+ Sarah      | Palmer    | 16333.323567708334
+ Jane       | Smith     |    14999.990234375
+(3 rows)
+
+joins_exercise=# SELECT o.first_name, o.last_name, COUNT(*), AVG(price) AS average_price
+FROM owners o
+JOIN vehicles v
+ON o.id = v.owner_id
+GROUP BY o.first_name, o.last_name
+HAVING COUNT(v.owner_id) > 1 AND AVG(price) > 10000
+ORDER BY first_name DESC, COUNT(*);
+ first_name | last_name | count |   average_price    
+------------+-----------+-------+--------------------
+ Shana      | Smith     |     4 | 19874.989624023438
+ Sarah      | Palmer    |     3 | 16333.323567708334
+ Jane       | Smith     |     2 |    14999.990234375
+(3 rows)
+
+joins_exercise=# SELECT o.first_name, o.last_name, AVG(price) AS average_price, COUNT(*)
+FROM owners o
+JOIN vehicles v
+ON o.id = v.owner_id
+GROUP BY o.first_name, o.last_name
+HAVING COUNT(v.owner_id) > 1 AND AVG(price) > 10000
+ORDER BY first_name DESC, average_price,  COUNT(*);
+ first_name | last_name |   average_price    | count 
+------------+-----------+--------------------+-------
+ Shana      | Smith     | 19874.989624023438 |     4
+ Sarah      | Palmer    | 16333.323567708334 |     3
+ Jane       | Smith     |    14999.990234375 |     2
+(3 rows)
+
+
+joins_exercise=# SELECT o.first_name, o.last_name, AVG(price) AS average_price, COUNT(*)
+FROM owners o
+JOIN vehicles v
+ON o.id = v.owner_id
+GROUP BY o.first_name, o.last_name
+HAVING COUNT(v.owner_id) > 1 AND AVG(price) > 10000
+ORDER BY first_name DESC;
+ first_name | last_name |   average_price    | count 
+------------+-----------+--------------------+-------
+ Shana      | Smith     | 19874.989624023438 |     4
+ Sarah      | Palmer    | 16333.323567708334 |     3
+ Jane       | Smith     |    14999.990234375 |     2
+(3 rows)
+
+-- Count the number of cars for each owner and display the average price for each of the cars as integers. 
+-- Display the owners first_name, last_name, average price and count of vehicles. The first_name should be ordered in descending order. 
+-- Only display results with more than one vehicle and an average price greater than 10000. Your output should look like this:
+
+--THIS WORKS!--
+joins_exercise=# SELECT o.first_name, o.last_name, ROUND(AVG(v.price)) AS average_price, COUNT(*)
+FROM owners o
+JOIN vehicles v
+ON o.id = v.owner_id
+GROUP BY o.first_name, o.last_name
+HAVING COUNT(v.owner_id) > 1 AND AVG(price) > 10000
+ORDER BY first_name DESC;
+ first_name | last_name | average_price | count 
+------------+-----------+---------------+-------
+ Shana      | Smith     |         19875 |     4
+ Sarah      | Palmer    |         16333 |     3
+ Jane       | Smith     |         15000 |     2
+(3 rows)
