@@ -99,5 +99,12 @@ Data-types:
 
 NULL - is a special value in SQL for "unknown"
 It's not the same thing as 0 or an empty string
-=======
->>>>>>> f327b6733e98b0a32e8148474690787f8d22d88b
+
+Constraints - are a basic form of validation. 
+The database can prevent basic types of unintended behavior
+    -Primary key (every table must have a unique identifier)
+    -Unique (prevent duplicates in the column)
+    -Not Null (prevent null in the column)
+    -Check (do a logical condition b4 inserting / updating)
+    -Foreign Key (Column values must reference values in another table)
+    
