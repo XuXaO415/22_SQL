@@ -173,3 +173,63 @@ INSERT INTO users (username, password)
 VALUES ('stevie_chicks', 'sdfljshdfkj');
 ERROR:  duplicate key value violates unique constraint "users_username_key"
 DETAIL:  Key (username)=(stevie_chicks) already exists.
+
+DROP DATABASE reddit_db;
+CREATE DATABASE reddit_db;
+\c reddit_db;
+
+--This procedures below illustrate how to create/utilize a primary key--
+
+reddit_db=# CREATE TABLE subreddits (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users,
+  name VARCHAR(15) NOT NULL,
+  descriptions TEXT,
+  subscribers INTEGER CHECK (subscribers > 0) DEFAULT 1,
+  is_private BOOLEAN DEFAULT false
+);
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(15) UNIQUE NOT NULL,
+  password VARCHAR(20) NOT NULL
+);
+
+INSERT INTO subreddits (name)
+VALUES ('Dororo_rocks');
+INSERT 0 1
+reddit_db=# \d
+                    List of relations
+ Schema |       Name        |   Type   |      Owner      
+--------+-------------------+----------+-----------------
+ public | subreddits        | table    | XuXaO415
+ public | subreddits_id_seq | sequence | XuXaO415
+ public | users             | table    | XuXaO415
+ public | users_id_seq      | sequence | XuXaO415
+(4 rows)
+
+
+reddit_db=# SELECT * FROM subreddits;
+ id |     name     | descriptions | subscribers | is_private 
+----+--------------+--------------+-------------+------------
+  1 | Dororo_rocks |              |           1 | f
+(1 row)
+
+INSERT INTO users (username, password)
+VALUES ('graylady', 'skjhwe'),
+('stevie-chicks', 'asdkfuwoeir');
+
+INSERT INTO subreddits (name, user_id)
+VALUES ('Chickens', 2),
+('waterluvers', 1);
+
+SELECT * FROM subreddits;
+ id | user_id |    name     | descriptions | subscribers | is_private 
+----+---------+-------------+--------------+-------------+------------
+  1 |       2 | Chickens    |              |           1 | f
+  2 |       1 | waterluvers |              |           1 | f
+(2 rows)
+
+
+INSERT INTO subreddits (name, user_id)
+VALUES ('DoRoRo_rocks', 4);
