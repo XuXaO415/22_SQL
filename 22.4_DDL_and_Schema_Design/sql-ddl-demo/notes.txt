@@ -108,3 +108,10 @@ The database can prevent basic types of unintended behavior
     -Check (do a logical condition b4 inserting / updating)
     -Foreign Key (Column values must reference values in another table)
     
+
+Serial - creates a default value that will increment
+
+Primary Key - Whatever column it's corresponding to must be unique
+and must be required, IT CANNOT BE NULL
+-It is equivalent to just writing UNIQUE, NOT NULL
+-It designates a unique identifier column for your table
