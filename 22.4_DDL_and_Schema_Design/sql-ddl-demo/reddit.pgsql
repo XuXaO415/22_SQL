@@ -30,9 +30,9 @@ reddit_db=# SELECT * FROM posts;
 
 CREATE TABLE subreddits (
   id SERIAL,
-  name VARCHAR(15),
+  name VARCHAR(15) NOT NULL,
   description TEXT,
-  subscribers INTEGER,
+  subscribers INTEGER CHECK(subscribers > 0),
   is_private BOOLEAN
 );
 
@@ -70,7 +70,11 @@ reddit_db-# ;
   2 | penguins   |                               |             | 
 (2 rows)
 
-
+CREATE TABLE users (
+  id SERIAL,
+  username VARCHAR(15) UNIQUE NOT NULL,
+  password VARCHAR(20) NOT NULL
+);
 
 DROP DATABASE IF EXISTS reddit_db;
 CREATE DATABASE reddit_db;
@@ -111,3 +115,61 @@ VALUES
 ('chickens', 2),
 ('waterluvers', 1);
 
+
+
+CREATE TABLE subreddits (
+  id SERIAL,
+  name VARCHAR(15) NOT NULL,
+  description TEXT,
+  subscribers INTEGER CHECK(subscribers > 0),
+  is_private BOOLEAN
+);
+
+CREATE TABLE users (
+  id SERIAL,
+  username VARCHAR(15) UNIQUE NOT NULL,
+  password VARCHAR(20) NOT NULL
+);
+
+reddit_db=# \d
+                    List of relations
+ Schema |       Name        |   Type   |      Owner      
+--------+-------------------+----------+-----------------
+ public | posts             | table    | XuXaO415
+ public | subreddits        | table    | XuXaO415
+ public | subreddits_id_seq | sequence | XuXaO415
+ public | users             | table    | XuXaO415
+ public | users_id_seq      | sequence | XuXaO415
+(5 rows)
+
+INSERT INTO subreddits (
+  name, subscribers
+)
+VALUES
+('pandas', 47000);
+
+reddit_db=# SELECT * FROM subreddits;
+ id |  name  | description | subscribers | is_private 
+----+--------+-------------+-------------+------------
+  1 | pandas |             |       47000 | 
+(1 row)
+
+INSERT INTO users (username, password)
+VALUES ('stevie_chicks', 'cluck123');
+
+INSERT INTO users (username, password)
+VALUES ('stevie_chicks', 'sdfljshdfkj');
+reddit_db=# INSERT INTO users (username, password)
+VALUES ('stevie_chicks', 'cluck123');
+INSERT 0 1
+reddit_db=# SELECt * FROM users;
+ id |   username    | password 
+----+---------------+----------
+  1 | stevie_chicks | cluck123
+(1 row)
+
+reddit_db=# 
+INSERT INTO users (username, password)
+VALUES ('stevie_chicks', 'sdfljshdfkj');
+ERROR:  duplicate key value violates unique constraint "users_username_key"
+DETAIL:  Key (username)=(stevie_chicks) already exists.
