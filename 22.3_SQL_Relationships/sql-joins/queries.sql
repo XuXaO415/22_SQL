@@ -195,3 +195,5 @@ ORDER BY first_name DESC;
  Sarah      | Palmer    |         16333 |     3
  Jane       | Smith     |         15000 |     2
 (3 rows)
+
+
