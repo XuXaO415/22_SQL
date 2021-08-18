@@ -1,3 +1,76 @@
+CREATE TABLE posts (
+  title TEXT,
+  username TEXT,
+  link TEXT
+);
+CREATE TABLE
+reddit_db=# \d
+            List of relations
+ Schema | Name  | Type  |      Owner      
+--------+-------+-------+-----------------
+ public | posts | table | XuXaO415
+(1 row)
+
+reddit_db=# INSERT INTO posts
+reddit_db-# (title, username, link)
+reddit_db-# VALUES
+reddit_db-# ('Adorable baby panda', 'flossy_supreme', 'www.lkjdfsdf.com');
+INSERT 0 1
+
+reddit_db=# INSERT INTO posts
+reddit_db-# (title, username, link)
+reddit_db-# VALUES
+reddit_db-# ('Adorable baby panda', 'flossy_supreme', 'www.lkjdfsdf.com');
+INSERT 0 1
+reddit_db=# SELECT * FROM posts;
+        title        |    username    |       link       
+---------------------+----------------+------------------
+ Adorable baby panda | flossy_supreme | www.lkjdfsdf.com
+(1 row)
+
+CREATE TABLE subreddits (
+  id SERIAL,
+  name VARCHAR(15),
+  description TEXT,
+  subscribers INTEGER,
+  is_private BOOLEAN
+);
+
+CREATE TABLE
+reddit_db=# \d
+                    List of relations
+ Schema |       Name        |   Type   |      Owner      
+--------+-------------------+----------+-----------------
+ public | posts             | table    | XuXaO415
+ public | subreddits        | table    | XuXaO415
+ public | subreddits_id_seq | sequence | XuXaO415
+(3 rows)
+
+INSERT INTO subreddits
+(name, description, subscribers, is_private)
+VALUES ('puppy_pics', 'super adorable puppy pictures', 455234, false);
+
+reddit_db=# SELECT * FROM  subreddits;
+ id |    name    |          description          | subscribers | is_private 
+----+------------+-------------------------------+-------------+------------
+  1 | puppy_pics | super adorable puppy pictures |      455234 | f
+(1 row)
+
+INSERT INTO subreddits (name)
+VALUES ('supercalifragilisticexpialidocious');
+
+reddit_db=# INSERT INTO subreddits (name)
+VALUES ('penguins');
+INSERT 0 1
+reddit_db=# SELECT * FROM subreddits
+reddit_db-# ;
+ id |    name    |          description          | subscribers | is_private 
+----+------------+-------------------------------+-------------+------------
+  1 | puppy_pics | super adorable puppy pictures |      455234 | f
+  2 | penguins   |                               |             | 
+(2 rows)
+
+
 
 DROP DATABASE IF EXISTS reddit_db;
 CREATE DATABASE reddit_db;
@@ -37,3 +110,4 @@ INSERT INTO subreddits (name, user_id)
 VALUES
 ('chickens', 2),
 ('waterluvers', 1);
+
