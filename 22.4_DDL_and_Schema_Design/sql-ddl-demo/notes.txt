@@ -95,6 +95,9 @@ Data-types:
 -varchar (string limits amount of characters)
 -serial (used usually for primary key 'id')
 -There's a lot more -- see PostgreSQL documentation @ https://www.postgresql.org/docs/current/datatype.html
+<<<<<<< HEAD
 
 NULL - is a special value in SQL for "unknown"
 It's not the same thing as 0 or an empty string
+=======
+>>>>>>> f327b6733e98b0a32e8148474690787f8d22d88b
