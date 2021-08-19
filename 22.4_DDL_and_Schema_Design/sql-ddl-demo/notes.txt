@@ -1,3 +1,6 @@
+Introduction to Structured Query Language (SQL).
+-- SQL is is a computer language used for storing, manipulating and retrieving data stored in a relational management database system (RMDS).--
+
 DDL – Data Definition Language
 DQl – Data Query Language
 DML – Data Manipulation Language
@@ -115,3 +118,30 @@ Primary Key - Whatever column it's corresponding to must be unique
 and must be required, IT CANNOT BE NULL
 -It is equivalent to just writing UNIQUE, NOT NULL
 -It designates a unique identifier column for your table
+
+CASCADE -
+It is used in conjunction with ON DELETE or ON UPDATE. It means that the child data is either deleted or updated when the parent data is deleted or updated.
+
+SET NULL
+It is used in conjunction with ON DELETE or ON UPDATE. It means that the child data is set to NULL when the parent data is deleted or updated.
+
+SET DEFAULT
+It is used in conjunction with ON DELETE or ON UPDATE. It means that the child data is set to their default values when the parent data is deleted or updated.
+
+
+DELETE ON CASCADE 
+ON DELETE CASCADE - It specifies that the child data is deleted when the parent data is deleted.
+ON DELETE
+ON DELETE SET NULL
+
+Column Manipulation
+Adding/ Removing / Renaming columns
+
+example:
+ALTER TABLE books ADD COLUMN in_paperback BOOLEAN;
+
+ALTER TABLE books DROP COLUMN in_paperback;
+
+ALTER TABLE books RENAME COLUMN page_count TO num_pages;
+
+
