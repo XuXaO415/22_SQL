@@ -145,3 +145,27 @@ ALTER TABLE books DROP COLUMN in_paperback;
 ALTER TABLE books RENAME COLUMN page_count TO num_pages;
 
 
+-Normalization - DB design technique which organizes tables in a manner that reduces redundancy and dependency of data
+-Divides larger tables to smaller tables and links them using relationships
+
+
+Indexing - 
+A database index is a special data structure that efficiently stores column values to speed up row retrieval via SELECT and WHERE (i.e "read") queries
+-speed up row retrieval
+-Index efficiency:
+    -very fast at looking things up, O(lg(N)) instead of O(N)
+    -reduce iterations/ memory impact
+    -only add index to a column that you will be looking up rows based off of (like a username)
+
+
+Indexing is part of DDL, but indexes can be created or dropped at any time.
+The more records in the database at the time of creating, the slower the indexing process will be.
+
+
+CREATE INDEX index_name ON table_name(column_name);
+
+
+CREATE INDEX subreddit_name_index ON subreddits (name);
+\d subreddit_name_index #will show indexes (and references)
+
+DROP INDEX subreddit_name_index;
