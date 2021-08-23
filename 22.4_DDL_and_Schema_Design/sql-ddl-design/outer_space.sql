@@ -59,6 +59,15 @@ CREATE TABLE galaxies (
   galaxy_notes TEXT[]
 );
 
+outer_space=# \d
+                   List of relations
+ Schema |      Name       |   Type   |      Owner      
+--------+-----------------+----------+-----------------
+ public | galaxies        | table    | XuXaO415
+ public | galaxies_id_seq | sequence | XuXaO415
+(2 rows)
+
+
 INSERT INTO galaxies
 (name, light_years, galaxy_notes)
 VALUES('Milky Way',  0.0265, '{Home galaxy of Earth. Barred spiral galaxy.}'),
