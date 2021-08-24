@@ -82,3 +82,7 @@ air_traffic=# SELECT * FROM airline_manifest;
   8 | {Galloway,Plato}    |   16470311 | 2021-12-04 00:00:00 | 2021-12-04 09:00:00 | {"New Delhi",India}       | XDZ94P     | D2
   9 | {Ewing,Stuart}      |   16390626 | 2022-05-03 00:00:00 | 2022-05-03 13:32:44 | {Phuket,Thailand}         | CZN43N     | C2
 (9 rows)
+
+--https://support.travelport.com/webhelp/GlobalWare/Content/14-Groups/Airline_Manifest.htm --
+
+-- https://www.generatedata.com/--
