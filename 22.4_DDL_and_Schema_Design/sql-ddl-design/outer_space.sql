@@ -103,3 +103,5 @@ outer_space=# SELECT * FROM galaxies;
  11 | Reticulum II           |       0.102 | {"Satellite of Milky Way"}
  12 | Segue 2                |       0.114 | {"Satellite of Milky Way","one of the smallest known galaxies"}
  13 | Carina II              |       0.122 | {"Satellite of Milky Way"}
+
+
