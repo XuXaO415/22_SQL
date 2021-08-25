@@ -23,6 +23,20 @@ CREATE TABLE regions (
     area_state VARCHAR(30)
 );
 
+INSERT INTO regions (area_city, area_state)
+VALUES ('San Francisco', 'CA'),
+('Atlanta', 'Georgia'),
+('Seattle', 'Washington');
+INSERT 0 3
+
+SELECT * FROM regions;
+ id |   area_city   | area_state 
+----+---------------+------------
+  1 | San Francisco | CA
+  2 | Atlanta       | Georgia
+  3 | Seattle       | Washington
+(3 rows)
+
 -- CREATE TABLE
 -- craigslist_db=# SELECT * FROM regions;
 --  id | area_city | area_state 
@@ -37,6 +51,20 @@ CREATE TABLE users (
     preferred_region INTEGER REFERENCES regions(id)
 );
 
+craigslist_db=# INSERT INTO users(username, password,  preferred_region)
+VALUES ('Fluffsterz4573', 'weur34323', 1),
+('CaptainJacz', 'sfkshjf2372esa', 3),
+('GeorgiaPeach','ewiry782349r', 2);
+
+ id |    username    |    password    | preferred_region 
+----+----------------+----------------+------------------
+  8 | Fluffsterz4573 | weur34323      |                1
+  9 | CaptainJacz    | sfkshjf2372esa |                3
+ 10 | GeorgiaPeach   | ewiry782349r   |                2
+(3 rows)
+
+
+
 -- CREATE TABLE
 -- craigslist_db=# SELECT * FROM users;
 --  id | username | password | preferred_region 
@@ -47,11 +75,31 @@ CREATE TABLE users (
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     post_title VARCHAR(30),
-    post_text TEXT,
-    user_post INTEGER REFERENCES users(id),
+    post_text TEXT[],
+    user_post_id INTEGER REFERENCES users(id),
     posting_loc INTEGER REFERENCES regions(id)
 );
 
+-- INSERT INTO posts(post_title, post_text, user_post_id, posting_loc)
+-- VALUES ('Piano for sale $300', '{Antique Piano for sale $300}', 9, 3),
+-- ('Smart TV for sale', '{Used 80 inch Samsung TV 4 sale. $600 or best offer}', 8, 1),
+-- ('PS5 $1000', '{BNIB PS5 $1000 or trade for a used car}', 10, 2);
+
+craigslist_db=# INSERT INTO posts(post_title, post_text, user_post_id, posting_loc)
+VALUES ('Piano for sale $300', '{Antique Piano for sale $300}', 9, 3),
+('Smart TV for sale', '{Used 80 inch Samsung TV 4 sale. $600 or best offer}', 8, 1),
+('PS5 $1000', '{BNIB PS5 $1000 or trade for a used car}', 10, 2);
+INSERT 0 3
+craigslist_db=# SELECT * FROM posts;
+ id |     post_title      |                       post_text                        | user_post_id | posting_loc 
+----+---------------------+--------------------------------------------------------+--------------+-------------
+  1 | Piano for sale $300 | {"Antique Piano for sale $300"}                        |            9 |           3
+  2 | Smart TV for sale   | {"Used 80 inch Samsung TV 4 sale. $600 or best offer"} |            8 |           1
+  3 | PS5 $1000           | {"BNIB PS5 $1000 or trade for a used car"}             |           10 |           2
+
+-- INSERT INTO posts (post_title, post_text, user_post_id, posting_loc)
+-- VALUES('Piano for sale', '{Antique piano for sale. $200 or best offer}', 1, 94110),
+-- ('Apple watch for sale', '{3rd generation apple watch for sale. $300}', NULL);
 --    FOREIGN KEY (category_id, posts_id)
 --     REFERENCES users (id)
 --     ON UPDATE CASCADE ON DELETE,
@@ -62,12 +110,60 @@ CREATE TABLE posts (
 -- (0 rows)
 
 
-
+-- here you need to have a seperate join table for categories to posts 
+-- how you have it here each category can only have one post
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
-    category TEXT UNIQUE NOT NULL,
-    match_post_to_cat INTEGER REFERENCES posts(id)
+    category_title VARCHAR(100),
+    match_cat_to_post TEXT
 );
+
+INSERT INTO categories (category_title, match_cat_to_post)
+VALUES('For Sale', 'Electronics'),
+('For Sale', 'Instruments'),
+('For Sale', 'Antiques'),
+('For Sale', 'Video games');
+
+craigslist_db=# SELECT * FROM categories;
+ id | category_title | match_cat_to_post 
+----+----------------+-------------------
+  1 | For Sale       | Electronics
+  2 | For Sale       | Instruments
+  3 | For Sale       | Antiques
+  4 | For Sale       | Video games
+(4 rows)
+
+
+SELECT category_title, post_title
+FROM categories
+JOIN posts
+ON categories.id = posts.id;
+
+
+ category_title |     post_title      
+----------------+---------------------
+ For Sale       | Piano for sale $300
+ For Sale       | Smart TV for sale
+ For Sale       | PS5 $1000
+(3 rows)
+
+
+-- SELECT match_cat_to_post, post_title
+-- FROM categories
+-- JOIN posts
+-- ON categories.id = posts.id;
+
+-- craigslist_db=# SELECT match_cat_to_post, post_title
+-- FROM categories
+-- JOIN posts
+-- ON categories.id = posts.id;
+--  match_cat_to_post |     post_title      
+-- -------------------+---------------------
+--  Electronics       | Piano for sale $300
+--  Instruments       | Smart TV for sale
+--  Antiques          | PS5 $1000
+-- (3 rows)
+
 
 -- CREATE TABLE
 -- craigslist_db=# SELECT * FROM categories;
@@ -93,7 +189,3 @@ craigslist_db=# \d
  public | regions_id_seq    | sequence | XuXaO415
  public | users             | table    | XuXaO415
  public | users_id_seq      | sequence | XuXaO415
-
-
-
-
