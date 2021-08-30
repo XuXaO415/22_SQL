@@ -189,3 +189,29 @@ craigslist_db=# \d
  public | regions_id_seq    | sequence | XuXaO415
  public | users             | table    | XuXaO415
  public | users_id_seq      | sequence | XuXaO415
+
+
+
+
+-- here you need to have a seperate join table for categories to posts 
+-- how you have it here each category can only have one post
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    category_title VARCHAR(100),
+    match_cat_to_post TEXT
+);
+
+INSERT INTO categories (category_title, match_cat_to_post)
+VALUES('For Sale', 'Electronics'),
+('For Sale', 'Instruments'),
+('For Sale', 'Antiques'),
+('For Sale', 'Video games');
+
+craigslist_db=# SELECT * FROM categories;
+ id | category_title | match_cat_to_post 
+----+----------------+-------------------
+  1 | For Sale       | Electronics
+  2 | For Sale       | Instruments
+  3 | For Sale       | Antiques
+  4 | For Sale       | Video games
+(4 rows)
