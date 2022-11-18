@@ -230,6 +230,129 @@ SELECT * FROM subreddits;
   2 |       1 | waterluvers |              |           1 | f
 (2 rows)
 
+------------------------------------------------------------------------------------------
 
-INSERT INTO subreddits (name, user_id)
-VALUES ('DoRoRo_rocks', 4);
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(15) UNIQUE NOT NULL,
+  password VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users ON DELETE CASCADE,
+  comment_text TEXT NOT NULL
+);
+
+CREATE TABLE subreddits (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users ON DELETE SET NULL,
+  name VARCHAR(15) NOT NULL,
+  descriptions TEXT,
+  subscribers INTEGER CHECK (subscribers > 0) DEFAULT 1,
+  is_private BOOLEAN DEFAULT false
+);
+
+INSERT INTO comments (user_id, comment_text)
+VALUES (2, 'cluck cluck'),
+(2, 'bock bock'),
+(1, 'doodle doo');
+
+INSERT INTO comments (user_id, comment_text)
+VALUES (2, 'cluck cluck'),
+(2, 'bock bock'),
+(1, 'doodle doo');
+INSERT 0 3
+reddit_db=# SELECT * FROM comments;
+ id | user_id | comment_text 
+----+---------+--------------
+  1 |       2 | cluck cluck
+  2 |       2 | bock bock
+  3 |       1 | doodle doo
+(3 rows)
+
+
+INSERT INTO comments (user_id, comment_text)
+VALUES (2, 'cluck cluck'),
+(2, 'bock bock'),
+(1, 'doodle doo');
+INSERT 0 3
+reddit_db=# SELECT * FROM comments;
+ id | user_id | comment_text 
+----+---------+--------------
+  1 |       2 | cluck cluck
+  2 |       2 | bock bock
+  3 |       1 | doodle doo
+(3 rows)
+
+
+-- DELETE FROM users WHERE id = 2;
+reddit_db=# DELETE FROM users WHERE id = 2;
+DELETE 1
+reddit_db=# SELECT * FROM users;
+ id |   username    |  password   
+----+---------------+-------------
+  1 | graylady      | askldjas
+  3 | stevie_chicks | sdfljshdfkj
+(2 rows)
+
+reddit_db=# SELECT * FROM comments;
+ id | user_id | comment_text 
+----+---------+--------------
+  3 |       1 | doodle doo
+(1 row)
+
+
+ALTER TABLE subreddits DROP COLUMN description;
+reddit_db=# SELECT * FROM subreddits;
+ id | user_id |     name     | description | subscribers | is_private 
+----+---------+--------------+-------------+-------------+------------
+  2 |       1 | waterluvers  |             |           1 | f
+  3 |         | Dororo_rocks |             |           1 | f
+  5 |       1 | waterluvers  |             |           1 | f
+  1 |         | chickens     |             |           1 | f
+  4 |         | Chickens     |             |           1 | f
+(5 rows)
+
+reddit_db=# ALTER TABLE subreddits DROP COLUMN description;
+ALTER TABLE
+reddit_db=# SELECT * FROM subreddits;
+ id | user_id |     name     | subscribers | is_private 
+----+---------+--------------+-------------+------------
+  2 |       1 | waterluvers  |           1 | f
+  3 |         | Dororo_rocks |           1 | f
+  5 |       1 | waterluvers  |           1 | f
+  1 |         | chickens     |           1 | f
+  4 |         | Chickens     |           1 | f
+
+
+ALTER TABLE subreddits DROP COLUMN is_private;
+
+reddit_db=# ALTER TABLE subreddits DROP COLUMN is_private;
+ALTER TABLE
+reddit_db=# SELECT * FROM subreddits;
+ id | user_id |     name     | subscribers 
+----+---------+--------------+-------------
+  2 |       1 | waterluvers  |           1
+  3 |         | Dororo_rocks |           1
+  5 |       1 | waterluvers  |           1
+  1 |         | chickens     |           1
+  4 |         | Chickens     |           1
+(5 rows)
+
+
+-- ALTER TABLE subreddits RENAME COLUMN user_id TO owner_id;
+reddit_db=# ALTER TABLE subreddits RENAME COLUMN user_id TO owner_id;
+ALTER TABLE
+reddit_db=# SELECT * FROM subreddits;
+ id | owner_id |     name     | subscribers 
+----+----------+--------------+-------------
+  2 |        1 | waterluvers  |           1
+  3 |          | Dororo_rocks |           1
+  5 |        1 | waterluvers  |           1
+  1 |          | chickens     |           1
+  4 |          | Chickens     |           1
+(5 rows)
+
+
+-- ALTER TABLE users ADD COLUMN permissions TEXT;
