@@ -50,7 +50,7 @@ CREATE TABLE songs (
   num_of_albums INTEGER NOT NULL,
   album_award BOOLEAN NOT NULL,
   song_writers TEXT[],
-  record_company TEXT NOT NULL
+  record_company TEXT NOT NULL  
   -- copies_sold INTEGER NOT NULL
 );
 
