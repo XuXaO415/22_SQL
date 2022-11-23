@@ -34,7 +34,7 @@ INSERT INTO regions (area_city, area_state)
 VALUES ('San Francisco', 'CA'),
 ('Atlanta', 'Georgia'),
 ('Seattle', 'Washington');
-INSERT 0 3
+-- INSERT 0 3
 
 SELECT * FROM regions;
  id |   area_city   | area_state 
@@ -59,30 +59,22 @@ CREATE TABLE users (
 );
 
 -- craigslist_db=# 
--- INSERT INTO users(username, password,  preferred_region)
--- VALUES ('Fluffsterz4573', 'weur34323', 1),
--- ('CaptainJacz', 'sfkshjf2372esa', 3),
--- ('GeorgiaPeach','ewiry782349r', 2);
-
---  id |    username    |    password    | preferred_region 
--- ----+----------------+----------------+------------------
---   8 | Fluffsterz4573 | weur34323      |                1
---   9 | CaptainJacz    | sfkshjf2372esa |                3
---  10 | GeorgiaPeach   | ewiry782349r   |                2
--- (3 rows)
+INSERT INTO users(username, password,  preferred_region)
+VALUES ('Fluffsterz4573', 'weur34323', 1),
+('CaptainJacz', 'sfkshjf2372esa', 3),
+('GeorgiaPeach','ewiry782349r', 2),
+('Mission_kid_415', 'password12345', 1);
+-- INSERT 0 4
 
 -- craigslist_db=# 
 SELECT * FROM users;
- id |    username    |    password    | preferred_region 
-----+----------------+----------------+------------------
-  8 | Fluffsterz4573 | weur34323      |                1
-  9 | CaptainJacz    | sfkshjf2372esa |                3
- 10 | GeorgiaPeach   | ewiry782349r   |                2
- 11 | Mission_kid    | password123    |                1
+ id |    username     |    password    | preferred_region 
+----+-----------------+----------------+------------------
+  5 | Fluffsterz4573  | weur34323      |                1
+  6 | CaptainJacz     | sfkshjf2372esa |                3
+  7 | GeorgiaPeach    | ewiry782349r   |                2
+  8 | Mission_kid_415 | password12345  |                1
 -- (4 rows)
-
-
-
 
 -- CREATE TABLE
 -- craigslist_db=# SELECT * FROM users;
@@ -91,13 +83,13 @@ SELECT * FROM users;
 -- (0 rows)
 
 
--- craigslist_db=# d\ posts;
+-- craigslist_db-# \d posts;
 --                                       Table "public.posts"
 --     Column    |         Type          | Collation | Nullable |              Default              
 -- --------------+-----------------------+-----------+----------+-----------------------------------
 --  id           | integer               |           | not null | nextval('posts_id_seq'::regclass)
 --  post_title   | character varying(30) |           |          | 
---  post_text    | text[]                |           |          | 
+--  post_text    | text                  |           |          | 
 --  user_post_id | integer               |           |          | 
 --  posting_loc  | integer               |           |          | 
 -- Indexes:
@@ -106,11 +98,19 @@ SELECT * FROM users;
 --     "posts_posting_loc_fkey" FOREIGN KEY (posting_loc) REFERENCES regions(id)
 --     "posts_user_post_id_fkey" FOREIGN KEY (user_post_id) REFERENCES users(id)
 
+-- This is older table that has an array as a data type
+-- CREATE TABLE posts (
+--     id SERIAL PRIMARY KEY,
+--     post_title VARCHAR(30),
+--     post_text TEXT[],
+--     user_post_id INTEGER REFERENCES users(id),
+--     posting_loc INTEGER REFERENCES regions(id)
+-- );
 
 CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     post_title VARCHAR(30),
-    post_text TEXT[],
+    post_text TEXT,
     user_post_id INTEGER REFERENCES users(id),
     posting_loc INTEGER REFERENCES regions(id)
 );
@@ -270,3 +270,12 @@ SELECT * FROM categories;
   4 | For Sale       | Video games
 -- (4 rows)
 
+
+-- Design a schema for Craigslist! Your schema should keep track of the following
+
+-- The region of the craigslist post (San Francisco, Atlanta, Seattle, etc)
+-- Users and preferred region
+-- Posts: contains title, text, the user who has posted, the location of the posting, the region of the posting
+-- Categories that each post belongs to
+-- avoid implementing array elements in your sql TABLES 
+S
