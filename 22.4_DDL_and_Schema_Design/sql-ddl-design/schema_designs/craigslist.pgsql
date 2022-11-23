@@ -116,29 +116,58 @@ SELECT * FROM users;
 
 --------------------Categories table----------------------- 
 ---------------------Updated table-------------------------
+-- CREATE TABLE categories (
+--     id SERIAL PRIMARY KEY,
+--     category TEXT NOT NULL,
+--     post INTEGER REFERENCES posts(id)
+-- );
+
+-- CREATE TABLE categories (
+--   id SERIAL PRIMARY KEY,
+--   category_name TEXT UNIQUE NOT NULL,
+--   CONSTRAINT PK_categories PRIMARY KEY (id)
+-- );
+
 CREATE TABLE categories (
-    id SERIAL PRIMARY KEY,
-    category TEXT NOT NULL,
-    category_section TEXT NOT NULL
+  CatId SERIAL NOT NULL,
+  category_name TEXT NOT NULL,
+  CONSTRAINT pk_categories PRIMARY KEY (CatId)
 );
 
--- INSERT INTO categories (category_section, category)
--- VALUES('For Sale', 'Electronics'),
--- ('For Sale', 'Instruments'),
--- ('For Sale', 'Electronics'),
--- ('For Sale', 'Video games');
+
+
+INSERT INTO categories (CatId, category_name)
+VALUES(1, 'Electronics'),
+(2, 'Instruments'),
+(3, 'Electronics'),
+(4, 'Video games');
+
 
 
 --------------------Posts table----------------------------
 ---------------------Updated table-------------------------
 
+-- CREATE TABLE posts (
+--   id SERIAL PRIMARY KEY,
+--   post_title VARCHAR(50),
+--   post_text TEXT NOT NULL,
+--   -- category_name INTEGER REFERENCES categories(id) NOT NULL,
+--   user_post_id INTEGER REFERENCES users(id),
+--   posting_loc INTEGER REFERENCES regions(id),
+--   -- cat_id INTEGER REFERENCES categories(id),
+--   CONSTRAINT PK_posts PRIMARY KEY (id)
+-- );
+
+
 CREATE TABLE posts (
-  id SERIAL PRIMARY KEY,
+  PostId SERIAL NOT NULL,
+  CatId INTEGER NOT NULL,
   post_title VARCHAR(50),
   post_text TEXT NOT NULL,
-  category INTEGER REFERENCES categories(id),
+  -- category_name INTEGER REFERENCES categories(id) NOT NULL,
   user_post_id INTEGER REFERENCES users(id),
-  posting_loc INTEGER REFERENCES regions(id)
+  posting_loc INTEGER REFERENCES regions(id),
+  CONSTRAINT pk_posts PRIMARY KEY (PostId)
 );
 
 -- CREATE TABLE posts (
@@ -149,24 +178,59 @@ CREATE TABLE posts (
 --     posting_loc INTEGER REFERENCES regions(id)
 -- );
 
+ALTER TABLE posts ADD CONSTRAINT fk_posts_CatId FOREIGN KEY(CatId)
+REFERENCES categories (CatId);
+
+--https://www.w3schools.com/sql/sql_primarykey.ASP#:~:text=The%20PRIMARY%20KEY%20constraint%20uniquely,or%20multiple%20columns%20(fields).
+
+
+SELECT posts.PostId, categories.CatId
+FROM posts
+INNER JOIN categories ON posts.CatId=categories.CatId;
+
+ postid | catid 
+--------+-------
+      1 |     1
+      2 |     2
+      3 |     3
+      4 |     4
+(4 rows)
+
 
 ------------------Posts data-----------------------------
 
-INSERT INTO posts(post_title, post_text, user_post_id, posting_loc)
-VALUES ('MacBook pro 16-inch, $1000 OBO', '{MacBook pro (16-inch, 2022) for sale $1000}',  1, 1),
-('Piano for sale $300', '{Antique Piano for sale $300}', 3, 2),
-('Smart TV for sale', '{Used 80 inch Samsung TV 4 sale. $600 or best offer}', 2, 3),
-('PS5 $1000', '{BNIB PS5 $1000 or trade for a used car}', 4, 1);
+INSERT INTO posts(post_title, post_text, CatId, user_post_id, posting_loc)
+VALUES ('MacBook pro 16-inch, $1000 OBO', '{MacBook pro (16-inch, 2022) for sale $1000}', 1,  1, 1),
+('Piano for sale $300', '{Antique Piano for sale $300}', 2, 3, 2),
+('Smart TV for sale', '{Used 80 inch Samsung TV 4 sale. $600 or best offer}', 3, 2, 3),
+('PS5 $1000', '{BNIB PS5 $1000 or trade for a used car}', 4, 4, 1);
 
-craigslist_db=#
-SELECT * FROM posts;
- id |           post_title           |                      post_text                       | user_post_id | posting_loc 
-----+--------------------------------+------------------------------------------------------+--------------+-------------
-  5 | MacBook pro 16-inch, $1000 OBO | {MacBook pro (16-inch, 2022) for sale $1000}         |            1 |           1
-  6 | Piano for sale $300            | {Antique Piano for sale $300}                        |            3 |           2
-  7 | Smart TV for sale              | {Used 80 inch Samsung TV 4 sale. $600 or best offer} |            2 |           3
-  8 | PS5 $1000                      | {BNIB PS5 $1000 or trade for a used car}             |            4 |           1
--- (4 rows)
+craigslist_db=# SELECT * FROM posts;
+ postid | catid |           post_title           |                      post_text                       | user_post_id | posting_loc 
+--------+-------+--------------------------------+------------------------------------------------------+--------------+-------------
+      1 |     1 | MacBook pro 16-inch, $1000 OBO | {MacBook pro (16-inch, 2022) for sale $1000}         |            1 |           1
+      2 |     2 | Piano for sale $300            | {Antique Piano for sale $300}                        |            3 |           2
+      3 |     3 | Smart TV for sale              | {Used 80 inch Samsung TV 4 sale. $600 or best offer} |            2 |           3
+      4 |     4 | PS5 $1000                      | {BNIB PS5 $1000 or trade for a used car}             |            4 |           1
+(4 rows)
+
+
+craigslist_db=# \d posts
+                                        Table "public.posts"
+    Column    |         Type          | Collation | Nullable |                Default                
+--------------+-----------------------+-----------+----------+---------------------------------------
+ postid       | integer               |           | not null | nextval('posts_postid_seq'::regclass)
+ catid        | integer               |           | not null | 
+ post_title   | character varying(50) |           |          | 
+ post_text    | text                  |           | not null | 
+ user_post_id | integer               |           |          | 
+ posting_loc  | integer               |           |          | 
+Indexes:
+    "pk_posts" PRIMARY KEY, btree (postid)
+Foreign-key constraints:
+    "fk_posts_catid" FOREIGN KEY (catid) REFERENCES categories(catid)
+    "posts_posting_loc_fkey" FOREIGN KEY (posting_loc) REFERENCES regions(id)
+    "posts_user_post_id_fkey" FOREIGN KEY (user_post_id) REFERENCES users(id)
 
 ----------------------------------Disregard everything below this line-------------------------------------
 
