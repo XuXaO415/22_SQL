@@ -16,26 +16,23 @@ CREATE DATABASE soccer_league_db;
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
     team_name TEXT UNIQUE NOT NULL,
+    team_wins INTEGER DEFAULT 0,
+    team_losses INTEGER DEFAULT 0,
+    game_goals INTEGER DEFAULT 0,
+    goals_for INTEGER DEFAULT 0,
+    goals_against INTEGER DEFAULT 0,
     team_stats INTEGER UNIQUE NOT NULL,
     league_standing INTEGER UNIQUE NOT NULL
 );
 
-CREATE TABLE seasons (
-    id SERIAL PRIMARY KEY,
-    start_date DATE,
-    end_date DATE
-);
-
-CREATE TABLE matches (
-    id SERIAL PRIMARY KEY,
-    season INTEGER REFERENCES seasons(id),
-    home_team TEXT REFERENCES teams(team_name) NOT NULL
-);
 
 CREATE TABLE goals (
     id SERIAL PRIMARY KEY,
     player_name TEXT REFERENCES players(player_name),
-    scoring_team TEXT REFERENCES teams(team_name)
+    scoring_team TEXT REFERENCES teams(team_name),
+    scored_against TEXT REFERENCES teams(team_name),
+    player_scored TEXT REFERENCES players(player_name),
+    match INTEGER REFERENCES matches(id)
 
 );
 
@@ -44,9 +41,11 @@ CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     player_stats INTEGER UNIQUE NOT NULL,
     player_name TEXT REFERENCES teams(team_name),
-    players_team TEXT REFERENCES teams(team_name)
+    player_team TEXT REFERENCES teams(team_name),
+    goals_from_player INTEGER DEFAULT 0
 
 );
+
 
 
 CREATE TABLE referees (
@@ -56,31 +55,27 @@ CREATE TABLE referees (
 
 );
 
-                  List of relations
- Schema |      Name       |   Type   |      Owner      
---------+-----------------+----------+-----------------
- public | matches         | table    | XuXaO415
- public | matches_id_seq  | sequence | XuXaO415
- public | players         | table    | XuXaO415
- public | players_id_seq  | sequence | XuXaO415
- public | referees        | table    | XuXaO415
- public | referees_id_seq | sequence | XuXaO415
- public | seasons         | table    | XuXaO415
- public | seasons_id_seq  | sequence | XuXaO415
- public | teams           | table    | XuXaO415
- public | teams_id_seq    | sequence | XuXaO415
-(10 rows)
 
-soccer_league_db=# \dt
-              List of relations
- Schema |   Name   | Type  |      Owner      
---------+----------+-------+-----------------
- public | matches  | table | XuXaO415
- public | players  | table | XuXaO415
- public | referees | table | XuXaO415
- public | seasons  | table | XuXaO415
- public | teams    | table | XuXaO415
-(5 rows)
+CREATE TABLE matches (
+    id SERIAL PRIMARY KEY,
+    season INTEGER REFERENCES seasons(id),
+    home_team TEXT REFERENCES teams(team_name) NOT NULL,
+    road_team TEXT REFERENCES teams(team_name) NOT NULL,
+    game_won BOOLEAN REFERENCES
+    game_lost
+);
+
+
+CREATE TABLE seasons (
+    id SERIAL PRIMARY KEY,
+    start_date DATE,
+    end_date DATE
+);
+
+
+
+
+
 
 
 
