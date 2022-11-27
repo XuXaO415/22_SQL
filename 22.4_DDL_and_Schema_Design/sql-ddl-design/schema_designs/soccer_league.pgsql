@@ -101,7 +101,13 @@ CREATE DATABASE soccer_ue_db;
 
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
-    team_name TEXT UNIQUE NOT NULL
+    team_name TEXT UNIQUE NOT NULL,
+    team_wins INTEGER DEFAULT 0,
+    team_losses INTEGER DEFAULT 0,
+    ties INTEGER DEFAULT 0,
+    goals_for INTEGER DEFAULT 0,
+    goals_against INTEGER DEFAULT 0,
+    league_standing INTEGER UNIQUE NOT NULL
 );
 
 INSERT INTO teams (team_name)
@@ -132,7 +138,12 @@ VALUES('Bayern München'),
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     player_name TEXT UNIQUE NOT NULL,
-    player_team TEXT REFERENCES teams(team_name)
+    player_team TEXT REFERENCES teams(team_name),
+    goals INTEGER DEFAULT 0,
+    assists INTEGER DEFAULT 0,
+    yellow_cards INTEGER DEFAULT 0,
+    red_cards INTEGER DEFAULT 0,
+    player_stats INTEGER UNIQUE NOT NULL
 );
 
 INSERT INTO players (player_name, player_team)
@@ -273,7 +284,7 @@ VALUES('Bayern München', 2, 5, 1, 1),
 --TODO: Either fix or create a new table that keeps track of [all] the teams (not just one team)
 -- Mentor said my original table only assigned one team and goals were not referencing games
 -- I think I fixed it by creating the table below and referencing the teams, matches.
---TODO: Add goal key id
+--TODO: Add goal [key] id
 
 CREATE TABLE games (
     id SERIAL PRIMARY KEY,
@@ -287,16 +298,18 @@ CREATE TABLE games (
     game_id INTEGER REFERENCES matches(id)
 );
 
-CREATE TABLE game_goals (
-    id SERIAL PRIMARY KEY,
-    game_id INTEGER REFERENCES games(id),
-    player_id INTEGER REFERENCES players(id),
-    team_id INTEGER REFERENCES teams(id),
-    opponent_team_id INTEGER REFERENCES teams(id)
-);
 
-INSERT INTO game_goals (game_id, player_id, team_id, opponent_team_id)
-VALUES(1,)
+-- NOT NECESSARY
+-- CREATE TABLE game_goals (
+--     id SERIAL PRIMARY KEY,
+--     game_id INTEGER REFERENCES games(id),
+--     player_id INTEGER REFERENCES players(id),
+--     team_id INTEGER REFERENCES teams(id),
+--     opponent_team_id INTEGER REFERENCES teams(id)
+-- );
+
+-- INSERT INTO game_goals (game_id, player_id, team_id, opponent_team_id)
+-- VALUES(1,)
 
 
 
