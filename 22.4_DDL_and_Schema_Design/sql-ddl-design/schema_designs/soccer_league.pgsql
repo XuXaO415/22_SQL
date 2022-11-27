@@ -164,6 +164,26 @@ CREATE TABLE goals (
     match INTEGER REFERENCES matches(id)
 );
 
+--TODO: Either fix or create a new table that keeps track of [all] the teams (not just one team)
+-- Mentor said my original table only assigned one team and goals were not referencing games
+-- I think I fixed it by creating the table below and referencing the teams, matches.
+--TODO: Add goal [key] id
+
+CREATE TABLE games (
+    id SERIAL PRIMARY KEY,
+    game_date DATE,
+    home_team TEXT REFERENCES teams(team_name),
+    away_team TEXT REFERENCES teams(team_name),
+    home_score INTEGER REFERENCES teams(team_name),
+    away_score INTEGER REFERENCES teams(team_name),
+    team_goal INTEGER REFERENCES teams(team_name),
+    season_id INTEGER REFERENCES matches(id),
+    referee_id INTEGER REFERENCES referees(id),
+    game_id INTEGER REFERENCES matches(id)
+);
+
+
+
 
 -- The standings/rankings of each team in the league (This doesn’t have to be its own table if the data can be captured somehow).
 
@@ -203,24 +223,6 @@ VALUES('Bayern München', 2, 5, 1, 1),
 ('FC Basel', 3, 5, 1, 1),
 ('FC Arsenal', 3, 5, 1, 1),
 ('FC Sevilla', 3, 5, 1, 1);
-
---TODO: Either fix or create a new table that keeps track of [all] the teams (not just one team)
--- Mentor said my original table only assigned one team and goals were not referencing games
--- I think I fixed it by creating the table below and referencing the teams, matches.
---TODO: Add goal [key] id
-
-CREATE TABLE games (
-    id SERIAL PRIMARY KEY,
-    game_date DATE,
-    home_team TEXT REFERENCES teams(team_name),
-    away_team TEXT REFERENCES teams(team_name),
-    home_score INTEGER REFERENCES teams(team_name),
-    away_score INTEGER REFERENCES teams(team_name),
-    team_goal INTEGER REFERENCES teams(team_name),
-    season_id INTEGER REFERENCES matches(id),
-    referee_id INTEGER REFERENCES referees(id),
-    game_id INTEGER REFERENCES matches(id)
-);
 
 
 -- NOT NECESSARY
