@@ -23,7 +23,7 @@ CREATE DATABASE soccer_ue_db;
 --     goals_against INTEGER DEFAULT 0,
 --     against_team INTEGER DEFAULT 0,
 --     team_stats INTEGER UNIQUE NOT NULL,
---     ue_standing INTEGER UNIQUE NOT NULL
+--     league_standing INTEGER UNIQUE NOT NULL
 -- );
 
 -- CREATE TABLE players (
@@ -71,31 +71,6 @@ CREATE DATABASE soccer_ue_db;
 --     end_date DATE
 -- );
 
-
-
-
--- CREATE TABLE teams (
---     id SERIAL PRIMARY KEY,
---     team_name TEXT UNIQUE NOT NULL
--- );
-
-
--- CREATE TABLE players (
---     id SERIAL PRIMARY KEY,
---     player_name TEXT UNIQUE NOT NULL,
---     player_team TEXT REFERENCES teams(team_name)
--- );
-
-
--- CREATE TABLE goals (
---     id SERIAL PRIMARY KEY,
---     player_name TEXT REFERENCES players(player_name),
---     scoring_team TEXT REFERENCES teams(team_name),
---     scored_against TEXT REFERENCES teams(team_name),
---     player_scored TEXT REFERENCES players(player_name),
---     match INTEGER REFERENCES matches(id)
--- );
-
 ----------------------------Redo--------------------------------
 
 
@@ -110,34 +85,11 @@ CREATE TABLE teams (
     league_standing INTEGER UNIQUE NOT NULL
 );
 
-INSERT INTO teams (team_name)
-VALUES('Bayern München'),
-('SSC Napoli'),
-('Real Madrid'),
-('Manchester City'),
-('Liverpool FC'),
-('Barcelona'),
-('Paris Saint-Germain'),
-('Borussia Dortmund'),
-('Tottenham Hotspur'),
-('Juventus'),
-('Chelsea FC'),
-('FC Porto'),
-('Atletico Madrid'),
-('FC Schalke 04'),
-('Manchester United'),
-('FC Internazionale Milano'),
-('FC Zenit'),
-('FC Basel'),
-('FC Arsenal'),
-('FC Sevilla'),
-('FC Barcelona');
-
-
 
 CREATE TABLE players (
     id SERIAL PRIMARY KEY,
     player_name TEXT UNIQUE NOT NULL,
+    player_position TEXT NOT NULL,
     player_team TEXT REFERENCES teams(team_name),
     goals INTEGER DEFAULT 0,
     assists INTEGER DEFAULT 0,
@@ -146,99 +98,17 @@ CREATE TABLE players (
     player_stats INTEGER UNIQUE NOT NULL
 );
 
-INSERT INTO players (player_name, player_team)
-VALUES('Robert Lewandowski', 'Bayern München'),
-('Dries Mertens', 'SSC Napoli'),
-('Karim Benzema', 'Real Madrid'),
-('Sergio Agüero', 'Manchester City'),
-('Mohamed Salah', 'Liverpool FC'),
-('Lionel Messi', 'Barcelona'),
-('Kylian Mbappé', 'Paris Saint-Germain'),
-('Jadon Sancho', 'Borussia Dortmund'),
-('Harry Kane', 'Tottenham Hotspur'),
-('Cristiano Ronaldo', 'Juventus'),
-('Eden Hazard', 'Chelsea FC'),
-('Tiquinho Soares', 'FC Porto'),
-('Antoine Griezmann', 'Atletico Madrid');
-
-
-CREATE TABLE matches (
-    id SERIAL PRIMARY KEY,
-    match_date_and_time DATE NOT NULL,
-    match_team TEXT REFERENCES teams(team_name),
-    match_opponent TEXT REFERENCES teams(team_name),
-    match_goals INTEGER REFERENCES goals(id),
-    match_players INTEGER REFERENCES players(id),
-    match_stats INTEGER UNIQUE NOT NULL
-);
-
-INSERT INTO matches (match_date_and_time, match_team, match_opponent, match_goals, match_players, match_stats)
-VALUES('2021-09-18', 'Bayern München', 'FC Schalke 04', 3, 1, 1),
-('2021-09-18', 'Real Madrid', 'FC Internazionale Milano', 3, 1, 2),
-('2021-09-18', 'SSC Napoli', 'FC Arsenal', 2, 1, 3),
-('2021-09-18', 'FC Basel', 'FC Zenit', 1, 1, 4),
-('2021-09-18', 'FC Sevilla', 'FC Internazionale Milano', 2, 1, 5),
-('2021-09-18', 'Manchester City', 'FC Sevilla', 3, 1, 6),
-('2021-09-18', 'FC Porto', 'FC Basel', 1, 1, 7),
-('2022-09-18', 'FC Internazionale Milano', 'FC Sevilla', 1, 1, 8),
-('2022-09-18', 'FC Zenit', 'FC Basel', 2, 1, 9),
-('2022-09-18', 'FC Arsenal', 'SSC Napoli', 1, 1, 10),
-('2022-09-18', 'Atletico Madrid', 'Bayern München', 1, 1, 11),
-('2021-09-18', 'FC Schalke 04', 'FC Porto', 1, 1, 12),
-('2022-09-18', 'FC Sevilla', 'Manchester City', 1, 1, 13),
-('2022-09-18', 'FC Internazionale Milano', 'Real Madrid', 1, 1, 14),
-('2022-09-19', 'Tottenham Hotspur', 'Atletico Madrid', 4, 1, 15),
-('2021-09-19', 'Borussia Dortmund', 'Real Madrid', 3, 1, 16),
-('2021-09-19', 'FC Barcelona', 'FC Internazionale Milano', 5, 1, 17),
-('2022-09-19', 'FC Arsenal', 'FC Barcelona', 1, 2, 19);
-
-
-
-CREATE TABLE goals (
-    id SERIAL PRIMARY KEY,
-    goal_player TEXT REFERENCES players(player_name),
-    goal_team TEXT REFERENCES teams(team_name),
-    goal_opponent TEXT REFERENCES teams(team_name)
-    -- goal_scorer TEXT REFERENCES players(player_name),
-    -- goal_match INTEGER REFERENCES matches(id)
-);
-
-INSERT INTO goals (goal_player, goal_team, goal_opponent)
-VALUES('Robert Lewandowski', 'Bayern München', 'SSC Napoli'),
-('Dries Mertens', 'SSC Napoli', 'Bayern München'),
-('Karim Benzema', 'Real Madrid', 'Manchester City'),
-('Sergio Agüero', 'Manchester City', 'Real Madrid'),
-('Mohamed Salah', 'Liverpool FC', 'Barcelona'),
-('Lionel Messi', 'Barcelona', 'Liverpool FC'),
-('Kylian Mbappé', 'Paris Saint-Germain', 'Borussia Dortmund'),
-('Jadon Sancho', 'Borussia Dortmund', 'Paris Saint-Germain'),
-('Harry Kane', 'Tottenham Hotspur', 'Juventus'),
-('Cristiano Ronaldo', 'Juventus', 'Tottenham Hotspur'),
-('Eden Hazard', 'Chelsea FC', 'FC Porto'),
-('Tiquinho Soares', 'FC Porto', 'Chelsea FC'),
-('Antoine Griezmann', 'Atletico Madrid', 'FC Schalke 04');
-
-
-CREATE TABLE referees (
-    id SERIAL PRIMARY KEY,
-    referee_name TEXT,
-    referees_call BOOLEAN NOT NULL
-);
-
-INSERT INTO referees (referee_name, referees_call)
-VALUES('Cüneyt Çakır', 'TRUE'),
-('Pawel Raczkowski', 'TRUE'),
-('Szymon Marciniak', 'TRUE'),
-('Björn Kuipers', 'TRUE'),
-('Milorad Mažić', 'TRUE'),
-('Damir Skomina', 'TRUE'),
-('Andreas Ekberg', 'TRUE'),
-('Ovidiu Hategan', 'TRUE'),
-('Björn Kuipers', 'TRUE'),
-('Milorad Mažić', 'TRUE'),
-('Damir Skomina', 'TRUE'),
-('Andreas Ekberg', 'TRUE');
-
+INSERT INTO players (player_name, player_position, player_team, goals, assists, yellow_cards, red_cards, player_stats)
+VALUES ('Lionel Messi', 'Forward', 'Barcelona', 0, 0, 0, 0, 0),
+('Cristiano Ronaldo', 'Forward', 'Juventus', 0, 0, 0, 0, 0),
+('Neymar', 'Forward', 'Paris Saint-Germain', 0, 0, 0, 0, 0),
+('Kylian Mbappe', 'Forward', 'Paris Saint-Germain', 0, 0, 0, 0, 0),
+('Robert Lewandowski', 'Forward', 'Bayern Munich', 0, 0, 0, 0, 0),
+('Sadio Mane', 'Forward', 'Liverpool', 0, 0, 0, 0, 0),
+('Kevin De Bruyne', 'Midfielder', 'Manchester City', 0, 0, 0, 0, 0),
+('Sergio Ramos', 'Defender', 'Real Madrid', 0, 0, 0, 0, 0),
+('Virgil Van Dijk', 'Defender', 'Liverpool', 0, 0, 0, 0, 0),
+('Sergio Busquets', 'Defender', 'Barcelona', 0, 0, 0, 0, 0);
 
 CREATE TABLE season (
     id SERIAL PRIMARY KEY,
@@ -250,13 +120,66 @@ INSERT INTO season (start_date, end_date)
 VALUES('2021-08-09', '2022-05-25');
 
 
+CREATE TABLE referees (
+    id SERIAL PRIMARY KEY,
+    referee_name TEXT,
+    referees_call BOOLEAN NOT NULL,
+    in_game INTEGER REFERENCES matches(id)
+);
+
+INSERT INTO referees (referee_name, referees_call, in_game)
+VALUES ('Mark Clattenburg', TRUE, 0),
+('Howard Webb', TRUE, 0),
+('Michael Oliver', TRUE, 0),
+('Martin Atkinson', TRUE, 0),
+('Mike Dean', TRUE, 0),
+('Anthony Taylor', TRUE, 0),
+('Andre Marriner', TRUE, 0),
+('Paul Tierney', TRUE, 0),
+('Lee Mason', TRUE, 0),
+('Mike Jones', TRUE, 0);
+
+
+CREATE TABLE matches (
+    id SERIAL PRIMARY KEY,
+    home_team TEXT REFERENCES teams(team_name) NOT NULL,
+    road_team TEXT REFERENCES teams(team_name) NOT NULL,
+    game_won BOOLEAN REFERENCES teams(team_name) NOT NULL,
+    game_lost BOOLEAN REFERENCES teams(team_name) NOT NULL,
+    game_tied BOOLEAN REFERENCES teams(team_name) NOT NULL,
+    season INTEGER REFERENCES seasons(id)
+    match_date DATE NOT NULL,
+    referee REFERENCES referees(id),
+    yellow_cards INTEGER DEFAULT 0,
+    red_cards INTEGER DEFAULT 0
+);
+
+
+CREATE TABLE goals (
+    id SERIAL PRIMARY KEY,
+    scored_by TEXT REFERENCES players(player_name),
+    -- player_scored TEXT REFERENCES players(player_name),
+    scored_against TEXT REFERENCES teams(team_name),
+    scoring_team TEXT REFERENCES teams(team_name),
+    match INTEGER REFERENCES matches(id)
+);
+
+
+-- The standings/rankings of each team in the league (This doesn’t have to be its own table if the data can be captured somehow).
+
 CREATE TABLE standings (
     id SERIAL PRIMARY KEY,
-    team_name TEXT REFERENCES teams(team_name),
-    team_wins INTEGER,
-    team_losses INTEGER,
-    team_ties INTEGER,
-    team_points INTEGER
+    matches_played INTEGER,
+    team TEXT REFERENCES teams(team_name),
+    games_won INTEGER REFERENCES teams(team_name),
+    games_drawn INTEGER REFERENCES teams(team_name),
+    games_lost INTEGER REFERENCES teams(team_name),
+    goals_scored INTEGER REFERENCES teams(team_name),
+    goals_conceded INTEGER REFERENCES teams(team_name),
+    goal_difference INTEGER REFERENCES teams(team_name),
+    points INTEGER REFERENCES teams(team_name),
+    season INTEGER REFERENCES season(id)
+
 );
 
 INSERT INTO standings (team_name, team_wins, team_losses, team_ties, team_points)
@@ -291,8 +214,9 @@ CREATE TABLE games (
     game_date DATE,
     home_team TEXT REFERENCES teams(team_name),
     away_team TEXT REFERENCES teams(team_name),
-    home_score INTEGER,
-    away_score INTEGER,
+    home_score INTEGER REFERENCES teams(team_name),
+    away_score INTEGER REFERENCES teams(team_name),
+    team_goal INTEGER REFERENCES teams(team_name),
     season_id INTEGER REFERENCES matches(id),
     referee_id INTEGER REFERENCES referees(id),
     game_id INTEGER REFERENCES matches(id)
