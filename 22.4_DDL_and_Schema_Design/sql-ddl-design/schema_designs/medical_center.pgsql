@@ -254,6 +254,7 @@ VALUES(1, 4 'Persistent cough', 'Bronchitis',  'Patient is suffering from bronch
 CREATE TABLE diagnoses (
     id SERIAL PRIMARY KEY,
     patient_id INTEGER REFERENCES patients(id),
+    seen_by INTEGER REFERENCES doctors(id),
     disease_name TEXT NOT NULL,
     illness_found BOOLEAN NOT NULL,
     illness_desc TEXT NOT NULL,
