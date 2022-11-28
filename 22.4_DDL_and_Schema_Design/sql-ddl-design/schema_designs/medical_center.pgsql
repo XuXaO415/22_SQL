@@ -33,7 +33,7 @@ CREATE DATABASE medical_center_db;
 --     patient_email TEXT
 -- );
 
--- INSERT INTO patients (patient_id, has_copay, covered_by_uhc, patient_email)
+-- INSERT INTO patients (patient_id, has_copay, covered_by, patient_email)
 -- VALUES(23324, false, true, 'starbright@gmail.com'),
 -- (98754, true, false, NULL),
 -- (72635, NULL, false, NULL);
@@ -195,16 +195,16 @@ CREATE TABLE doctors (
     accepts_new_patients BOOLEAN NOT NULL,
     contact_number INTEGER,
     contact_email TEXT,
-    specialization TEXT UNIQUE NOT NULL
+    department TEXT UNIQUE NOT NULL
 );
 
-INSERT INTO doctors (name, accepts_new_patients, contact_number,contact_email, specialization)
+INSERT INTO doctors (name, accepts_new_patients, contact_number,contact_email, department)
 VALUES('Richard Sanchez', false, 415949, 'rSanchez@medical.com', 'Intergalactic medicine'),
 ('Jonas Salk', false, 619352, 'jSaulk@medical.com', 'Virologist'),
 ('Elma Rodriguez-Wong', true, 415826, 'elmaRW@md.com', 'Family Medicine'),
 ('Dr. Strange', true, 415826, 'dr.strange@med.com',  'Neurosurgery');
 
--- INSERT INTO doctors (name, accepts_new_patients, contact_number, specialization)
+-- INSERT INTO doctors (name, accepts_new_patients, contact_number, department)
 -- VALUES('Richard Sanchez', false, 415949, 'Intergalactic medicine'),
 -- ('Jonas Salk', false, 619352, 'Virologist'),
 -- ('Elma Rodriguez-Wong', true, 415826, 'Family Medicine'),
