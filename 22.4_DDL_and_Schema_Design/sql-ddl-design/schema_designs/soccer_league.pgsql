@@ -164,23 +164,37 @@ CREATE TABLE goals (
     match INTEGER REFERENCES matches(id)
 );
 
+CREATE TABLE games (
+    id SERIAL PRIMARY KEY,
+    match_id INTEGER REFERENCES matches(id),
+    goal_id INTEGER REFERENCES goals(id),
+    team_id INTEGER REFERENCES teams(id),
+    referee_id INTEGER REFERENCES referees(id),
+    season_id INTEGER REFERENCES seasons(id),
+    
+);
+
+
+
+)
+
 --TODO: Either fix or create a new table that keeps track of [all] the teams (not just one team)
 -- Mentor said my original table only assigned one team and goals were not referencing games
 -- I think I fixed it by creating the table below and referencing the teams, matches.
 --TODO: Add goal [key] id
 
-CREATE TABLE games (
-    id SERIAL PRIMARY KEY,
-    game_date DATE,
-    home_team TEXT REFERENCES teams(team_name),
-    away_team TEXT REFERENCES teams(team_name),
-    home_score INTEGER REFERENCES teams(team_name),
-    away_score INTEGER REFERENCES teams(team_name),
-    team_goal INTEGER REFERENCES teams(team_name),
-    season_id INTEGER REFERENCES matches(id),
-    referee_id INTEGER REFERENCES referees(id),
-    game_id INTEGER REFERENCES matches(id)
-);
+-- CREATE TABLE games (
+--     id SERIAL PRIMARY KEY,
+--     game_date DATE,
+--     home_team TEXT REFERENCES teams(team_name),
+--     away_team TEXT REFERENCES teams(team_name),
+--     home_score INTEGER REFERENCES teams(team_name),
+--     away_score INTEGER REFERENCES teams(team_name),
+--     team_goal INTEGER REFERENCES teams(team_name),
+--     season_id INTEGER REFERENCES matches(id),
+--     referee_id INTEGER REFERENCES referees(id),
+--     game_id INTEGER REFERENCES matches(id)
+-- );
 
 
 
@@ -239,10 +253,53 @@ VALUES('Bayern München', 2, 5, 1, 1),
 
 
 
+-- CREATE TABLE teams (
+--     id SERIAL PRIMARY KEY,
+--     team_name TEXT UNIQUE NOT NULL,
+--     team_wins INTEGER DEFAULT 0,
+--     team_losses INTEGER DEFAULT 0,
+--     ties INTEGER DEFAULT 0,
+--     goals_for INTEGER DEFAULT 0,
+--     goals_against INTEGER DEFAULT 0,
+--     league_standing INTEGER UNIQUE NOT NULL
+-- );
+
+-- CREATE TABLE players (
+--     id SERIAL PRIMARY KEY,
+--     player_name TEXT UNIQUE NOT NULL,
+--     team_id INTEGER REFERENCES teams(id),
+--     goals INTEGER DEFAULT 0,
+--     assists INTEGER DEFAULT 0,
+--     yellow_cards INTEGER DEFAULT 0,
+--     red_cards INTEGER DEFAULT 0,
+--     league_standing INTEGER UNIQUE NOT NULL
+-- );
+
+-- CREATE TABLE season (
+--     id SERIAL PRIMARY KEY,
+--     start_date DATE NOT NULL,
+--     end_date DATE NOT NULL
+-- );
+-- CREATE TABLE referees (
+--     id SERIAL PRIMARY KEY,
+--     referee_name TEXT,
+--     referees_call BOOLEAN NOT NULL,
+--     in_game INTEGER REFERENCES matches(id)
+-- );
 
 
-
-
+-- CREATE TABLE games (
+--     id SERIAL PRIMARY KEY,
+--     game_date DATE,
+--     home_team TEXT REFERENCES teams(team_name),
+--     away_team TEXT REFERENCES teams(team_name),
+--     home_score INTEGER REFERENCES teams(team_name),
+--     away_score INTEGER REFERENCES teams(team_name),
+--     team_goal INTEGER REFERENCES teams(team_name),
+--     season_id INTEGER REFERENCES matches(id),
+--     referee_id INTEGER REFERENCES referees(id),
+--     game_id INTEGER REFERENCES matches(id)
+-- );
 
 
 
